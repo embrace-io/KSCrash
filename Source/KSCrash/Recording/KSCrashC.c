@@ -124,6 +124,8 @@ static void notifyOfBeforeInstallationState(void)
  */
 static void onCrash(struct KSCrash_MonitorContext* monitorContext)
 {
+    KSLOG_DEBUG("Logging crash.");
+
     if (monitorContext->currentSnapshotUserReported == false) {
         KSLOG_DEBUG("Updating application state to note crash.");
         kscrashstate_notifyAppCrash();
@@ -132,6 +134,7 @@ static void onCrash(struct KSCrash_MonitorContext* monitorContext)
 
     if(monitorContext->crashedDuringCrashHandling)
     {
+        KSLOG_WARN("Writing recrash report since we crashed during crash handling.");
         kscrashreport_writeRecrashReport(monitorContext, g_lastCrashReportFilePath);
     }
     else
@@ -139,8 +142,9 @@ static void onCrash(struct KSCrash_MonitorContext* monitorContext)
         char crashReportFilePath[KSFU_MAX_PATH_LENGTH];
         int64_t reportID = kscrs_getNextCrashReport(crashReportFilePath);
         strncpy(g_lastCrashReportFilePath, crashReportFilePath, sizeof(g_lastCrashReportFilePath));
+        KSLOG_DEBUG("Writing crash report.");
         kscrashreport_writeStandardReport(monitorContext, crashReportFilePath);
-
+        KSLOG_DEBUG("Completed writing crash report.");
         if(g_reportWrittenCallback)
         {
             g_reportWrittenCallback(reportID);

@@ -1186,21 +1186,25 @@ static void writeThread(const KSCrashReportWriter* const writer,
     {
         if(hasBacktrace)
         {
+            KSLOG_DEBUG("Writing thread -- has backtrace");
             writeBacktrace(writer, KSCrashField_Backtrace, &stackCursor);
         }
         if(ksmc_canHaveCPUState(machineContext))
         {
+            KSLOG_DEBUG("Writing thread -- registers");
             writeRegisters(writer, KSCrashField_Registers, machineContext);
         }
         writer->addIntegerElement(writer, KSCrashField_Index, threadIndex);
         const char* name = ksccd_getThreadName(thread);
         if(name != NULL)
         {
+            KSLOG_DEBUG("Writing thread -- name");
             writer->addStringElement(writer, KSCrashField_Name, name);
         }
         name = ksccd_getQueueName(thread);
         if(name != NULL)
         {
+            KSLOG_DEBUG("Writing thread -- dispatch queue");
             writer->addStringElement(writer, KSCrashField_DispatchQueue, name);
         }
         writer->addBooleanElement(writer, KSCrashField_Crashed, isCrashedThread);
@@ -1210,6 +1214,7 @@ static void writeThread(const KSCrashReportWriter* const writer,
             writeStackContents(writer, KSCrashField_Stack, machineContext, stackCursor.state.hasGivenUp);
             if(shouldWriteNotableAddresses)
             {
+                KSLOG_DEBUG("Writing thread -- notable addresses");
                 writeNotableAddresses(writer, KSCrashField_NotableAddresses, machineContext);
             }
         }
@@ -1354,6 +1359,7 @@ static void writeError(const KSCrashReportWriter* const writer,
     writer->beginObject(writer, key);
     {
 #if KSCRASH_HOST_APPLE
+        KSLOG_DEBUG("Writing report -- mach.");
         writer->beginObject(writer, KSCrashField_Mach);
         {
             const char* machExceptionName = ksmach_exceptionName(crash->mach.type);
@@ -1372,6 +1378,7 @@ static void writeError(const KSCrashReportWriter* const writer,
         }
         writer->endContainer(writer);
 #endif
+        KSLOG_DEBUG("Writing report -- signal.");
         writer->beginObject(writer, KSCrashField_Signal);
         {
             const char* sigName = kssignal_signalName(crash->signal.signum);
@@ -1392,6 +1399,7 @@ static void writeError(const KSCrashReportWriter* const writer,
         writer->addUIntegerElement(writer, KSCrashField_Address, crash->faultAddress);
         if(crash->crashReason != NULL)
         {
+            KSLOG_DEBUG("Writing report -- reason.");
             writer->addStringElement(writer, KSCrashField_Reason, crash->crashReason);
         }
 
@@ -1399,15 +1407,18 @@ static void writeError(const KSCrashReportWriter* const writer,
         switch(crash->crashType)
         {
             case KSCrashMonitorTypeMainThreadDeadlock:
+                KSLOG_DEBUG("Writing report -- thread deadlock.");
                 writer->addStringElement(writer, KSCrashField_Type, KSCrashExcType_Deadlock);
                 break;
                 
             case KSCrashMonitorTypeMachException:
+                KSLOG_DEBUG("Writing report -- mach exception.");
                 writer->addStringElement(writer, KSCrashField_Type, KSCrashExcType_Mach);
                 break;
 
             case KSCrashMonitorTypeCPPException:
             {
+                KSLOG_DEBUG("Writing report -- cpp exception.");
                 writer->addStringElement(writer, KSCrashField_Type, KSCrashExcType_CPPException);
                 writer->beginObject(writer, KSCrashField_CPPException);
                 {
@@ -1418,22 +1429,28 @@ static void writeError(const KSCrashReportWriter* const writer,
             }
             case KSCrashMonitorTypeNSException:
             {
+                KSLOG_DEBUG("Writing report -- NSException.");
                 writer->addStringElement(writer, KSCrashField_Type, KSCrashExcType_NSException);
                 writer->beginObject(writer, KSCrashField_NSException);
                 {
+                    KSLOG_DEBUG("Writing report -- NSException name.");
                     writer->addStringElement(writer, KSCrashField_Name, crash->NSException.name);
+                    KSLOG_DEBUG("Writing report -- NSException user info.");
                     writer->addStringElement(writer, KSCrashField_UserInfo, crash->NSException.userInfo);
+                    KSLOG_DEBUG("Writing report -- NSException referenced object.");
                     writeAddressReferencedByString(writer, KSCrashField_ReferencedObject, crash->crashReason);
                 }
                 writer->endContainer(writer);
                 break;
             }
             case KSCrashMonitorTypeSignal:
+                KSLOG_DEBUG("Writing report -- signal.");
                 writer->addStringElement(writer, KSCrashField_Type, KSCrashExcType_Signal);
                 break;
 
             case KSCrashMonitorTypeUserReported:
             {
+                KSLOG_DEBUG("Writing report -- user reported.");
                 writer->addStringElement(writer, KSCrashField_Type, KSCrashExcType_User);
                 writer->beginObject(writer, KSCrashField_UserReported);
                 {
@@ -1725,6 +1742,7 @@ void kscrashreport_writeStandardReport(const KSCrash_MonitorContext* const monit
 
     if(!ksfu_openBufferedWriter(&bufferedWriter, path, writeBuffer, sizeof(writeBuffer)))
     {
+        KSLOG_ERROR("Failed to write crash report.");
         return;
     }
 
@@ -1740,6 +1758,8 @@ void kscrashreport_writeStandardReport(const KSCrash_MonitorContext* const monit
 
     writer->beginObject(writer, KSCrashField_Report);
     {
+        KSLOG_DEBUG("Writing report -- basic info.");
+
         writeReportInfo(writer,
                         KSCrashField_Report,
                         KSCrashReportType_Standard,
@@ -1747,19 +1767,24 @@ void kscrashreport_writeStandardReport(const KSCrash_MonitorContext* const monit
                         monitorContext->System.processName);
         ksfu_flushBufferedWriter(&bufferedWriter);
 
+        KSLOG_DEBUG("Writing report -- binary images.");
         writeBinaryImages(writer, KSCrashField_BinaryImages);
         ksfu_flushBufferedWriter(&bufferedWriter);
 
+        KSLOG_DEBUG("Writing report -- process state.");
         writeProcessState(writer, KSCrashField_ProcessState, monitorContext);
         ksfu_flushBufferedWriter(&bufferedWriter);
 
+        KSLOG_DEBUG("Writing report -- system info.");
         writeSystemInfo(writer, KSCrashField_System, monitorContext);
         ksfu_flushBufferedWriter(&bufferedWriter);
 
         writer->beginObject(writer, KSCrashField_Crash);
         {
+            KSLOG_DEBUG("Writing report -- error.");
             writeError(writer, KSCrashField_Error, monitorContext);
             ksfu_flushBufferedWriter(&bufferedWriter);
+            KSLOG_DEBUG("Writing report -- threads.");
             writeAllThreads(writer,
                             KSCrashField_Threads,
                             monitorContext,
@@ -1770,6 +1795,7 @@ void kscrashreport_writeStandardReport(const KSCrash_MonitorContext* const monit
 
         if(g_userInfoJSON != NULL)
         {
+            KSLOG_DEBUG("Writing report -- user info.");
             addJSONElement(writer, KSCrashField_User, g_userInfoJSON, false);
             ksfu_flushBufferedWriter(&bufferedWriter);
         }
@@ -1781,12 +1807,14 @@ void kscrashreport_writeStandardReport(const KSCrash_MonitorContext* const monit
         {
             ksfu_flushBufferedWriter(&bufferedWriter);
             if (monitorContext->currentSnapshotUserReported == false) {
+                KSLOG_DEBUG("Writing report -- user section callback.");
                 g_userSectionWriteCallback(writer);
             }
         }
         writer->endContainer(writer);
         ksfu_flushBufferedWriter(&bufferedWriter);
 
+        KSLOG_DEBUG("Writing report -- debug info.");
         writeDebugInfo(writer, KSCrashField_Debug, monitorContext);
     }
     writer->endContainer(writer);

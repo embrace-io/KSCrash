@@ -290,7 +290,7 @@ bool kslog_clearLogFile(void);
  * @param FMT The format specifier, followed by its arguments.
  */
 #if KSLOG_PRINTS_AT_LEVEL(KSLogger_Level_Error)
-    #define KSLOG_ERROR(FMT, ...) a_KSLOG_FULL("ERROR", FMT, ##__VA_ARGS__)
+    #define KSLOG_ERROR(FMT, ...) a_KSLOG_FULL("[Embrace] KS_ERROR", FMT, ##__VA_ARGS__)
     #define KSLOGBASIC_ERROR(FMT, ...) i_KSLOG_BASIC(FMT, ##__VA_ARGS__)
 #else
     #define KSLOG_ERROR(FMT, ...)
@@ -303,7 +303,7 @@ bool kslog_clearLogFile(void);
  * @param FMT The format specifier, followed by its arguments.
  */
 #if KSLOG_PRINTS_AT_LEVEL(KSLogger_Level_Warn)
-    #define KSLOG_WARN(FMT, ...)  a_KSLOG_FULL("WARN ", FMT, ##__VA_ARGS__)
+    #define KSLOG_WARN(FMT, ...)  a_KSLOG_FULL("[Embrace] KS_WARN ", FMT, ##__VA_ARGS__)
     #define KSLOGBASIC_WARN(FMT, ...) i_KSLOG_BASIC(FMT, ##__VA_ARGS__)
 #else
     #define KSLOG_WARN(FMT, ...)
@@ -316,7 +316,7 @@ bool kslog_clearLogFile(void);
  * @param FMT The format specifier, followed by its arguments.
  */
 #if KSLOG_PRINTS_AT_LEVEL(KSLogger_Level_Info)
-    #define KSLOG_INFO(FMT, ...)  a_KSLOG_FULL("INFO ", FMT, ##__VA_ARGS__)
+    #define KSLOG_INFO(FMT, ...)  a_KSLOG_FULL("[Embrace] KS_INFO ", FMT, ##__VA_ARGS__)
     #define KSLOGBASIC_INFO(FMT, ...) i_KSLOG_BASIC(FMT, ##__VA_ARGS__)
 #else
     #define KSLOG_INFO(FMT, ...)
@@ -329,7 +329,7 @@ bool kslog_clearLogFile(void);
  * @param FMT The format specifier, followed by its arguments.
  */
 #if KSLOG_PRINTS_AT_LEVEL(KSLogger_Level_Debug)
-    #define KSLOG_DEBUG(FMT, ...) a_KSLOG_FULL("DEBUG", FMT, ##__VA_ARGS__)
+    #define KSLOG_DEBUG(FMT, ...) a_KSLOG_FULL("[Embrace] KS_DEBUG", FMT, ##__VA_ARGS__)
     #define KSLOGBASIC_DEBUG(FMT, ...) i_KSLOG_BASIC(FMT, ##__VA_ARGS__)
 #else
     #define KSLOG_DEBUG(FMT, ...)

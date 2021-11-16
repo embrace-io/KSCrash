@@ -67,7 +67,7 @@ static void handleException(NSException* exception, BOOL currentSnapshotUserRepo
         ksmc_suspendEnvironment(&threads, &numThreads);
         kscm_notifyFatalExceptionCaptured(false);
 
-        KSLOG_DEBUG(@"Filling out context.");
+        KSLOG_DEBUG(@"NSException handler - Filling out context.");
         NSArray* addresses = [exception callStackReturnAddresses];
         NSUInteger numFrames = addresses.count;
         uintptr_t* callstack = malloc(numFrames * sizeof(*callstack));
@@ -96,8 +96,9 @@ static void handleException(NSException* exception, BOOL currentSnapshotUserRepo
         crashContext->stackCursor = &cursor;
         crashContext->currentSnapshotUserReported = currentSnapshotUserReported;
 
-        KSLOG_DEBUG(@"Calling main crash handler.");
+        KSLOG_DEBUG(@"NSException handler - Calling main crash handler.");
         kscm_handleException(crashContext);
+        KSLOG_DEBUG(@"NSException handler - Completed calling main crash handler.");
 
         free(callstack);
         if (currentSnapshotUserReported) {
@@ -125,22 +126,23 @@ static void handleUncaughtException(NSException* exception) {
 
 static void setEnabled(bool isEnabled)
 {
+    KSLOG_DEBUG(@"NSException handler - setEnabled isEnabled=%d g_isEnabled=%d.", isEnabled, g_isEnabled);
     if(isEnabled != g_isEnabled)
     {
         g_isEnabled = isEnabled;
         if(isEnabled)
         {
-            KSLOG_DEBUG(@"Backing up original handler.");
+            KSLOG_DEBUG(@"NSException handler - Backing up original handler.");
             g_previousUncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
             
-            KSLOG_DEBUG(@"Setting new handler.");
+            KSLOG_DEBUG(@"NSException handler - Setting new handler.");
             NSSetUncaughtExceptionHandler(&handleUncaughtException);
             KSCrash.sharedInstance.uncaughtExceptionHandler = &handleUncaughtException;
             KSCrash.sharedInstance.currentSnapshotUserReportedExceptionHandler = &handleCurrentSnapshotUserReportedException;
         }
         else
         {
-            KSLOG_DEBUG(@"Restoring original handler.");
+            KSLOG_DEBUG(@"NSException handler - Restoring original handler.");
             NSSetUncaughtExceptionHandler(g_previousUncaughtExceptionHandler);
         }
     }

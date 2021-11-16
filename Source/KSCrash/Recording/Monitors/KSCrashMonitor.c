@@ -156,6 +156,7 @@ static inline void addContextualInfoToEvent(Monitor* monitor, struct KSCrash_Mon
 
 void kscm_setEventCallback(void (*onEvent)(struct KSCrash_MonitorContext* monitorContext))
 {
+    KSLOG_DEBUG("Setting onExceptionEvent callback.");
     g_onExceptionEvent = onEvent;
 }
 
@@ -230,9 +231,11 @@ bool kscm_notifyFatalExceptionCaptured(bool isAsyncSafeEnvironment)
 
 void kscm_handleException(struct KSCrash_MonitorContext* context)
 {
+    KSLOG_DEBUG("handle exception. %d monitors enabled.", g_monitorsCount);
     context->requiresAsyncSafety = g_requiresAsyncSafety;
     if(g_crashedDuringExceptionHandling)
     {
+        KSLOG_WARN("Crashed during exception handling");
         context->crashedDuringCrashHandling = true;
     }
     for(int i = 0; i < g_monitorsCount; i++)
@@ -240,11 +243,14 @@ void kscm_handleException(struct KSCrash_MonitorContext* context)
         Monitor* monitor = &g_monitors[i];
         if(isMonitorEnabled(monitor))
         {
+            KSLOG_DEBUG("Adding context info for monitor %d", monitor->monitorType);
             addContextualInfoToEvent(monitor, context);
         }
     }
 
+    KSLOG_DEBUG("Running onExceptionEvent handler");
     g_onExceptionEvent(context);
+    KSLOG_DEBUG("Done with onExceptionEvent handler");
 
     if (context->currentSnapshotUserReported) {
         g_handlingFatalException = false;
