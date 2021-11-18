@@ -162,24 +162,24 @@ void kscm_setEventCallback(void (*onEvent)(struct KSCrash_MonitorContext* monito
 
 void kscm_setActiveMonitors(KSCrashMonitorType monitorTypes)
 {
-    if(ksdebug_isBeingTraced() && (monitorTypes & KSCrashMonitorTypeDebuggerUnsafe))
-    {
-        static bool hasWarned = false;
-        if(!hasWarned)
-        {
-            hasWarned = true;
-            KSLOGBASIC_WARN("    ************************ Crash Handler Notice ************************");
-            KSLOGBASIC_WARN("    *     App is running in a debugger. Masking out unsafe monitors.     *");
-            KSLOGBASIC_WARN("    * This means that most crashes WILL NOT BE RECORDED while debugging! *");
-            KSLOGBASIC_WARN("    **********************************************************************");
-        }
-        monitorTypes &= KSCrashMonitorTypeDebuggerSafe;
-    }
-    if(g_requiresAsyncSafety && (monitorTypes & KSCrashMonitorTypeAsyncUnsafe))
-    {
-        KSLOG_DEBUG("Async-safe environment detected. Masking out unsafe monitors.");
-        monitorTypes &= KSCrashMonitorTypeAsyncSafe;
-    }
+//    if(ksdebug_isBeingTraced() && (monitorTypes & KSCrashMonitorTypeDebuggerUnsafe))
+//    {
+//        static bool hasWarned = false;
+//        if(!hasWarned)
+//        {
+//            hasWarned = true;
+//            KSLOGBASIC_WARN("    ************************ Crash Handler Notice ************************");
+//            KSLOGBASIC_WARN("    *     App is running in a debugger. Masking out unsafe monitors.     *");
+//            KSLOGBASIC_WARN("    * This means that most crashes WILL NOT BE RECORDED while debugging! *");
+//            KSLOGBASIC_WARN("    **********************************************************************");
+//        }
+//        monitorTypes &= KSCrashMonitorTypeDebuggerSafe;
+//    }
+//    if(g_requiresAsyncSafety && (monitorTypes & KSCrashMonitorTypeAsyncUnsafe))
+//    {
+//        KSLOG_DEBUG("Async-safe environment detected. Masking out unsafe monitors.");
+//        monitorTypes &= KSCrashMonitorTypeAsyncSafe;
+//    }
 
     KSLOG_DEBUG("Changing active monitors from 0x%x tp 0x%x.", g_activeMonitors, monitorTypes);
 
