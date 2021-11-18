@@ -59,7 +59,8 @@ static NSUncaughtExceptionHandler* g_previousUncaughtExceptionHandler;
  */
 
 static void handleException(NSException* exception, BOOL currentSnapshotUserReported) {
-    KSLOG_DEBUG(@"Trapped exception %@", exception);
+    KSLOG_DEBUG(@"Trapped exception");
+    KSLOG_DEBUG(@"Trapped exception: %@", exception);
     if(g_isEnabled)
     {
         thread_act_array_t threads = NULL;
