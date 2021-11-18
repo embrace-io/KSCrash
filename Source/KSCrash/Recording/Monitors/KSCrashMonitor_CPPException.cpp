@@ -189,6 +189,7 @@ catch(TYPE value)\
 
     KSLOG_DEBUG("Calling original terminate handler.");
     g_originalTerminateHandler();
+    KSLOG_DEBUG("Completed calling original terminate handler.");
 }
 
 
