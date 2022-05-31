@@ -1091,8 +1091,12 @@ static int decodeElement(const char* const name, KSJSONDecodeContext* context)
 
             if(!isFPChar(*context->bufferPtr) && !isOverflow)
             {
-                if(sign < 0 || accum <= ((uint64_t)LLONG_MAX + 1))
-                {
+                if (accum == 18446744073709551585ULL) {
+                    int a = 0;
+                }
+                if (accum > ((uint64_t)LLONG_MAX)) {
+                    return context->callbacks->onUIntegerElement(name, accum, context->userData);
+                } else {
                     int64_t signedAccum = accum;
                     signedAccum *= sign;
                     return context->callbacks->onIntegerElement(name, signedAccum, context->userData);
@@ -1249,6 +1253,16 @@ static int addJSONFromFile_onIntegerElement(const char* const name,
     return result;
 }
 
+static int addJSONFromFile_onUIntegerElement(const char* const name,
+                                            const uint64_t value,
+                                            void* const userData)
+{
+    JSONFromFileContext* context = (JSONFromFileContext*)userData;
+    int result = ksjson_addUIntegerElement(context->encodeContext, name, value);
+    context->updateDecoderCallback(context);
+    return result;
+}
+
 static int addJSONFromFile_onNullElement(const char* const name,
                                          void* const userData)
 {
@@ -1317,6 +1331,7 @@ int ksjson_addJSONFromFile(KSJSONEncodeContext* const encodeContext,
         .onEndData = addJSONFromFile_onEndData,
         .onFloatingPointElement = addJSONFromFile_onFloatingPointElement,
         .onIntegerElement = addJSONFromFile_onIntegerElement,
+        .onUIntegerElement = addJSONFromFile_onUIntegerElement,
         .onNullElement = addJSONFromFile_onNullElement,
         .onStringElement = addJSONFromFile_onStringElement,
     };
@@ -1379,6 +1394,7 @@ int ksjson_addJSONElement(KSJSONEncodeContext* const encodeContext,
         .onEndData = addJSONFromFile_onEndData,
         .onFloatingPointElement = addJSONFromFile_onFloatingPointElement,
         .onIntegerElement = addJSONFromFile_onIntegerElement,
+        .onUIntegerElement = addJSONFromFile_onUIntegerElement,
         .onNullElement = addJSONFromFile_onNullElement,
         .onStringElement = addJSONFromFile_onStringElement,
     };

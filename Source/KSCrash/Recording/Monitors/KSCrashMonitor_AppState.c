@@ -128,6 +128,31 @@ static int onIntegerElement(const char* const name, const int64_t value, void* c
     return onFloatingPointElement(name, value, userData);
 }
 
+static int onUIntegerElement(const char* const name, const uint64_t value, void* const userData)
+{
+    KSCrash_AppState* state = userData;
+
+    if(strcmp(name, kKeyFormatVersion) == 0)
+    {
+        if(value != kFormatVersion)
+        {
+            KSLOG_ERROR("Expected version 1 but got %" PRIu64, value);
+            return KSJSON_ERROR_INVALID_DATA;
+        }
+    }
+    else if(strcmp(name, kKeyLaunchesSinceLastCrash) == 0)
+    {
+        state->launchesSinceLastCrash = (int)value;
+    }
+    else if(strcmp(name, kKeySessionsSinceLastCrash) == 0)
+    {
+        state->sessionsSinceLastCrash = (int)value;
+    }
+
+    // FP value might have been written as a whole number.
+    return onFloatingPointElement(name, value, userData);
+}
+
 static int onNullElement(__unused const char* const name, __unused void* const userData)
 {
     return KSJSON_OK;
@@ -220,6 +245,7 @@ static bool loadState(const char* const path)
     callbacks.onEndData = onEndData;
     callbacks.onFloatingPointElement = onFloatingPointElement;
     callbacks.onIntegerElement = onIntegerElement;
+    callbacks.onUIntegerElement = onUIntegerElement;
     callbacks.onNullElement = onNullElement;
     callbacks.onStringElement = onStringElement;
 
