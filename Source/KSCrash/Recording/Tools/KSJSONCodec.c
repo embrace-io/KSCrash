@@ -1091,7 +1091,7 @@ static int decodeElement(const char* const name, KSJSONDecodeContext* context)
 
             if(!isFPChar(*context->bufferPtr) && !isOverflow)
             {
-                if(sign > 0 || accum <= ((uint64_t)LLONG_MAX + 1))
+                if(sign < 0 || accum <= ((uint64_t)LLONG_MAX + 1))
                 {
                     int64_t signedAccum = accum;
                     signedAccum *= sign;

@@ -337,6 +337,8 @@ static int encodeObject(KSJSONCodec* codec, id object, NSString* name, KSJSONEnc
                 return ksjson_addFloatingPointElement(context, cName, [object doubleValue]);
             case kCFNumberCharType:
                 return ksjson_addBooleanElement(context, cName, [object boolValue]);
+            case kCFNumberSInt64Type:
+                return ksjson_addUIntegerElement(context, cName, [object unsignedLongLongValue]);
             default:
                 return ksjson_addIntegerElement(context, cName, [object longLongValue]);
         }
