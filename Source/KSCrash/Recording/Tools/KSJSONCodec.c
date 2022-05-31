@@ -1091,9 +1091,6 @@ static int decodeElement(const char* const name, KSJSONDecodeContext* context)
 
             if(!isFPChar(*context->bufferPtr) && !isOverflow)
             {
-                if (accum == 18446744073709551585ULL) {
-                    int a = 0;
-                }
                 if (accum > ((uint64_t)LLONG_MAX)) {
                     return context->callbacks->onUIntegerElement(name, accum, context->userData);
                 } else {
