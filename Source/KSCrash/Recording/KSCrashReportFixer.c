@@ -205,6 +205,34 @@ static int onIntegerElement(const char* const name,
     return result;
 }
 
+static int onUIntegerElement(const char* const name,
+                            const uint64_t value,
+                            void* const userData)
+{
+    FixupContext* context = (FixupContext*)userData;
+    int result = KSJSON_OK;
+    if(shouldFixDate(context, name))
+    {
+        char buffer[28];
+
+        if(matchesMinVersion(context, 3, 3, 0))
+        {
+            ksdate_utcStringFromMicroseconds(value, buffer);
+        }
+        else
+        {
+            ksdate_utcStringFromTimestamp((time_t)value, buffer);
+        }
+
+        result = ksjson_addStringElement(context->encodeContext, name, buffer, (int)strlen(buffer));
+    }
+    else
+    {
+        result = ksjson_addUIntegerElement(context->encodeContext, name, value);
+    }
+    return result;
+}
+
 static int onNullElement(const char* const name,
                          void* const userData)
 {
@@ -325,6 +353,7 @@ char* kscrf_fixupCrashReport(const char* crashReport)
         .onEndData = onEndData,
         .onFloatingPointElement = onFloatingPointElement,
         .onIntegerElement = onIntegerElement,
+        .onUIntegerElement = onUIntegerElement,
         .onNullElement = onNullElement,
         .onStringElement = onStringElement,
     };

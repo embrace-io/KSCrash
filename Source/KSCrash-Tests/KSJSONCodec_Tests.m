@@ -944,6 +944,25 @@ static NSString* toString(NSData* data)
     XCTAssertEqualObjects(result, original, @"");
 }
 
+- (void) testSerializeDeserializeUnsignedLongLong
+{
+    NSError* error = (NSError*)self;
+    NSString* expected = @"[10223372036854775808]";
+    id original = [NSArray arrayWithObjects:
+                   [NSNumber numberWithUnsignedLongLong:10223372036854775808ull],
+                   nil];
+    NSString* jsonString = toString([KSJSONCodec encode:original
+                                                options:KSJSONEncodeOptionSorted
+                                                  error:&error]);
+    XCTAssertNotNil(jsonString, @"");
+    XCTAssertNil(error, @"");
+    XCTAssertEqualObjects(jsonString, expected, @"");
+    id result = [KSJSONCodec decode:toData(jsonString) options:0 error:&error];
+    XCTAssertNotNil(result, @"");
+    XCTAssertNil(error, @"");
+    XCTAssertEqualObjects(result, original, @"");
+}
+
 - (void) testSerializeDeserializeNegative
 {
     NSError* error = (NSError*)self;

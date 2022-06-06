@@ -459,6 +459,20 @@ typedef struct KSJSONDecodeCallbacks
                             int64_t value,
                             void* userData);
 
+    /** Called when an unsigned integer element is decoded.
+     *
+     * @param name The element's name.
+     *
+     * @param value The element's value.
+     *
+     * @param userData Data that was specified when calling ksjson_decode().
+     *
+     * @return KSJSON_OK if decoding should continue.
+     */
+    int (*onUIntegerElement)(const char* name,
+                            uint64_t value,
+                            void* userData);
+    
     /** Called when a null element is decoded.
      *
      * @param name The element's name.

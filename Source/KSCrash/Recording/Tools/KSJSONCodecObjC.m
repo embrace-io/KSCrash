@@ -135,6 +135,7 @@
         self.callbacks->onEndData = onEndData;
         self.callbacks->onFloatingPointElement = onFloatingPointElement;
         self.callbacks->onIntegerElement = onIntegerElement;
+        self.callbacks->onUIntegerElement = onUIntegerElement;
         self.callbacks->onNullElement = onNullElement;
         self.callbacks->onStringElement = onStringElement;
         self.prettyPrint = (encodeOptions & KSJSONEncodeOptionPretty) != 0;
@@ -227,6 +228,16 @@ static int onIntegerElement(const char* const cName,
 {
     NSString* name = stringFromCString(cName);
     id element = [NSNumber numberWithLongLong:value];
+    KSJSONCodec* codec = (__bridge KSJSONCodec*)userData;
+    return onElement(codec, name, element);
+}
+
+static int onUIntegerElement(const char* const cName,
+                                       const uint64_t value,
+                                       void* const userData)
+{
+    NSString* name = stringFromCString(cName);
+    id element = [NSNumber numberWithUnsignedLongLong:value];
     KSJSONCodec* codec = (__bridge KSJSONCodec*)userData;
     return onElement(codec, name, element);
 }
@@ -337,6 +348,8 @@ static int encodeObject(KSJSONCodec* codec, id object, NSString* name, KSJSONEnc
                 return ksjson_addFloatingPointElement(context, cName, [object doubleValue]);
             case kCFNumberCharType:
                 return ksjson_addBooleanElement(context, cName, [object boolValue]);
+            case kCFNumberSInt64Type:
+                return ksjson_addUIntegerElement(context, cName, [object unsignedLongLongValue]);
             default:
                 return ksjson_addIntegerElement(context, cName, [object longLongValue]);
         }

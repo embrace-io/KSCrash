@@ -135,6 +135,7 @@
 		03DE7CD51C84E02A00F789BA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB52178F17EB735D007CB3C1 /* Foundation.framework */; };
 		03DE7CD71C84E1F400F789BA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DE7CD61C84E1F400F789BA /* libz.tbd */; };
 		03DE7DAA1C879A0200F789BA /* KSCrashFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 03DE7DA91C879A0200F789BA /* KSCrashFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3C6C791E283828DE009F3E6F /* libswiftDemangle.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C6C791D283828DE009F3E6F /* libswiftDemangle.tbd */; };
 		632D8DAD1EDFFA6700A9A62E /* KSCrashC.h in Copy Headers */ = {isa = PBXBuildFile; fileRef = CBF53D1F17EB765C0056DA83 /* KSCrashC.h */; };
 		632D8DAE1EDFFA6700A9A62E /* KSCrashCachedData.h in Copy Headers */ = {isa = PBXBuildFile; fileRef = CBA8A0C41E2561210019B5B9 /* KSCrashCachedData.h */; };
 		632D8DAF1EDFFA6700A9A62E /* KSCrashDoctor.h in Copy Headers */ = {isa = PBXBuildFile; fileRef = CBF53D2317EB765C0056DA83 /* KSCrashDoctor.h */; };
@@ -810,6 +811,7 @@
 		03DE7CD61C84E1F400F789BA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		03DE7D0F1C84FB9E00F789BA /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = ../../Source/Framework/module.modulemap; sourceTree = "<group>"; };
 		03DE7DA91C879A0200F789BA /* KSCrashFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSCrashFramework.h; path = ../../Source/Framework/KSCrashFramework.h; sourceTree = "<group>"; };
+		3C6C791D283828DE009F3E6F /* libswiftDemangle.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftDemangle.tbd; path = usr/lib/swift/libswiftDemangle.tbd; sourceTree = SDKROOT; };
 		6E8894847F02F7B05F31FE4F /* KSgetsect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = KSgetsect.c; path = ../../Source/KSCrash/Recording/Tools/KSgetsect.c; sourceTree = "<group>"; };
 		6E889A12BAE413442C0DA527 /* KSCxaThrowSwapper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = KSCxaThrowSwapper.c; path = ../../Source/KSCrash/Recording/Tools/KSCxaThrowSwapper.c; sourceTree = "<group>"; };
 		6E889A8EEFCE259D2B1D7CA7 /* KSCxaThrowSwapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KSCxaThrowSwapper.h; path = ../../Source/KSCrash/Recording/Tools/KSCxaThrowSwapper.h; sourceTree = "<group>"; };
@@ -1073,6 +1075,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C6C791E283828DE009F3E6F /* libswiftDemangle.tbd in Frameworks */,
 				CB7A6CEE17FB9E2800997792 /* libKSCrashLib.a in Frameworks */,
 				CB0264D417FA6101003E0AED /* libz.dylib in Frameworks */,
 				CB0264D217FA60D3003E0AED /* MessageUI.framework in Frameworks */,
@@ -1119,6 +1122,7 @@
 		CB52178E17EB735D007CB3C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3C6C791D283828DE009F3E6F /* libswiftDemangle.tbd */,
 				03DE7CD61C84E1F400F789BA /* libz.tbd */,
 				CB0264D317FA6101003E0AED /* libz.dylib */,
 				CB0264D117FA60D3003E0AED /* MessageUI.framework */,
@@ -1936,6 +1940,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -2529,6 +2534,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRIVATE_HEADERS_FOLDER_PATH = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "";
@@ -2564,6 +2570,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "KSCrashTests/KSCrashTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.stenerud.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
@@ -2581,6 +2592,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KSCrash/KSCrash-Prefix.pch";
 				INFOPLIST_FILE = "KSCrashTests/KSCrashTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.stenerud.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
