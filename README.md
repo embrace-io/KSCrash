@@ -1,4 +1,4 @@
-[KSCrash](2023-06-06_kscrash.md)
+KSCrash
 =======
 
 #### The Ultimate Crash Reporter
