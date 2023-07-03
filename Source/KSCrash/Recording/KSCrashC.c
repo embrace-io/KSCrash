@@ -481,3 +481,10 @@ void kscrash_deleteReportWithID(int64_t reportID)
 {
     kscrs_deleteReportWithID(reportID);
 }
+
+void kscrash_initializeReports(const char* appName, const char* const installPath) {
+    char path[KSFU_MAX_PATH_LENGTH];
+    snprintf(path, sizeof(path), "%s/Reports", installPath);
+    ksfu_makePath(path);
+    kscrs_initialize(appName, path);
+}

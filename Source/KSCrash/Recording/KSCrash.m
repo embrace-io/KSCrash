@@ -180,6 +180,12 @@ static dispatch_once_t onceToken;
 #pragma mark - API -
 // ============================================================================
 
+- (void)prepareReports {
+    kscrash_initializeReports(self.bundleName.UTF8String,
+                                          self.basePath.UTF8String);
+}
+
+
 - (NSDictionary*) userInfo
 {
    return _userInfo;

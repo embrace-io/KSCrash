@@ -220,6 +220,10 @@ typedef enum
 @property(class,readonly) BOOL wasInstalled;
 #pragma mark - API -
 
+/** Prepare the classes to access to the existent reports
+ */
+- (void) prepareReports;
+
 /** Get the singleton instance of the crash reporter.
  */
 + (KSCrash*) sharedInstance;
