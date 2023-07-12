@@ -46,12 +46,21 @@ typedef enum
     KSCDeleteAlways
 } KSCDeleteBehavior;
 
+@protocol KSCrashReportReader <NSObject>
+
+- (NSArray*)reportIDs;
+- (NSDictionary*) reportWithID:(NSNumber*) reportID;
+- (void) deleteAllReports;
+- (void) deleteReportWithID:(NSNumber*) reportID;
+
+@end
+
 /**
  * Reports any crashes that occur in the application.
  *
  * The crash reports will be located in $APP_HOME/Library/Caches/KSCrashReports
  */
-@interface KSCrash : NSObject
+@interface KSCrash : NSObject <KSCrashReportReader>
 
 #pragma mark - Configuration -
 
