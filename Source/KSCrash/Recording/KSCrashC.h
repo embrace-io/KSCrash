@@ -284,8 +284,6 @@ void kscrash_deleteAllReports(void);
 void kscrash_deleteReportWithID(int64_t reportID);
 
 
-void kscrash_initializeReports(const char* appName, const char* const installPath);
-
 
 #ifdef __cplusplus
 }

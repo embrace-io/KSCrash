@@ -229,10 +229,6 @@ typedef enum
 @property(class,readonly) BOOL wasInstalled;
 #pragma mark - API -
 
-/** Prepare the classes to access to the existent reports. This is created to have a KSCrash Instance without monitors that allows to access to the reports previously created. This is for accessing to Extension crashes from the host app
- */
-- (void) prepareReports;
-
 /** Get the singleton instance of the crash reporter.
  */
 + (KSCrash*) sharedInstance;
