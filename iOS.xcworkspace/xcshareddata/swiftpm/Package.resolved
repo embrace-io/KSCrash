@@ -1,0 +1,15 @@
+{
+  "originHash" : "792f65e8045d9f364d36c4283b3c35efbe7094b7f423e3d08663283f247516ba",
+  "pins" : [
+    {
+      "identity" : "swift-demangler",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/embrace-io/swift-demangler",
+      "state" : {
+        "branch" : "main",
+        "revision" : "090aa38cab7e83f9fce262795461c60f5fe0909f"
+      }
+    }
+  ],
+  "version" : 3
+}
