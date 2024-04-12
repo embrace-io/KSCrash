@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.7
 
 import PackageDescription
 
@@ -15,12 +15,15 @@ let package = Package(
                 "KSCrash/Reporting/Filters",
                 "KSCrash/Reporting/Filters/Tools",
                 "KSCrash/Reporting/Tools",
-                "KSCrash/Reporting/Sinks",
-                "KSCrash/swift/Basic"
+                "KSCrash/Reporting/Sinks"
             ]
         )
     ],
     dependencies: [
+        .package(
+            url: "https://github.com/embrace-io/swift-demangler.git",
+            branch: "main"
+        ),
     ],
     targets: [
         .target(
@@ -63,6 +66,9 @@ let package = Package(
         ),
         .target(
             name: "KSCrash/Recording/Tools",
+            dependencies: [
+                .product(name: "AppleSwiftDemangler", package: "swift-demangler")
+            ],
             path: "Source/KSCrash/Recording/Tools",
             publicHeadersPath: ".",
             cxxSettings: [
@@ -116,17 +122,6 @@ let package = Package(
                 .headerSearchPath("../../Recording"),
                 .headerSearchPath("../../Recording/Tools"),
                 .headerSearchPath("../../Recording/Monitors")
-            ]
-        ),
-        .target(
-            name: "KSCrash/swift/Basic",
-            path: "Source/KSCrash/swift/Basic",
-            publicHeadersPath: ".",
-            cxxSettings: [
-                .headerSearchPath(".."),
-                .headerSearchPath("../../llvm/ADT"),
-                .headerSearchPath("../../llvm/Config"),
-                .headerSearchPath("../../llvm/Support")
             ]
         )
     ],
