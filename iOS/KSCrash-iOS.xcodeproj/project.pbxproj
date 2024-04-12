@@ -231,6 +231,7 @@
 		6E889AE634130C8F37C2875A /* KSgetsect.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E8894847F02F7B05F31FE4F /* KSgetsect.c */; };
 		6E889B651331FD97EEB0C42F /* KSgetsect.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E8894847F02F7B05F31FE4F /* KSgetsect.c */; };
 		6E889F76F8DCC4749067A458 /* KSCxaThrowSwapper.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E889A12BAE413442C0DA527 /* KSCxaThrowSwapper.c */; };
+		7B1966392BC8B1D700F255AC /* AppleSwiftDemangler in Frameworks */ = {isa = PBXBuildFile; productRef = 7B1966382BC8B1D700F255AC /* AppleSwiftDemangler */; };
 		7B414D732BC6ED0B00DF0CA8 /* AppleSwiftDemangler in Frameworks */ = {isa = PBXBuildFile; productRef = 7B414D722BC6ED0B00DF0CA8 /* AppleSwiftDemangler */; };
 		CB02648017F7CEC5003E0AED /* KSCPU_arm64.c in Sources */ = {isa = PBXBuildFile; fileRef = CB02647E17F7CEC5003E0AED /* KSCPU_arm64.c */; };
 		CB02648217F8D853003E0AED /* KSCrashMonitor_CPPException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBF53D4F17EB765C0056DA83 /* KSCrashMonitor_CPPException.cpp */; };
@@ -1034,6 +1035,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB6D132717EB749A00BC2C04 /* Foundation.framework in Frameworks */,
+				7B1966392BC8B1D700F255AC /* AppleSwiftDemangler in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1826,6 +1828,9 @@
 			dependencies = (
 			);
 			name = KSCrashLib;
+			packageProductDependencies = (
+				7B1966382BC8B1D700F255AC /* AppleSwiftDemangler */,
+			);
 			productName = KSCrashLib;
 			productReference = CB6D132617EB749A00BC2C04 /* libKSCrashLib.a */;
 			productType = "com.apple.product-type.library.static";
@@ -2525,6 +2530,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "KSCrashTests/KSCrashTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/swift",
@@ -2546,6 +2552,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KSCrash/KSCrash-Prefix.pch";
 				INFOPLIST_FILE = "KSCrashTests/KSCrashTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/swift",
@@ -2692,6 +2699,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7B1966382BC8B1D700F255AC /* AppleSwiftDemangler */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7B414D712BC6ED0B00DF0CA8 /* XCRemoteSwiftPackageReference "swift-demangler" */;
+			productName = AppleSwiftDemangler;
+		};
 		7B414D722BC6ED0B00DF0CA8 /* AppleSwiftDemangler */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7B414D712BC6ED0B00DF0CA8 /* XCRemoteSwiftPackageReference "swift-demangler" */;
