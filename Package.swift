@@ -67,7 +67,7 @@ let package = Package(
         .target(
             name: "KSCrash/Recording/Tools",
             dependencies: [
-                .product(name: "AppleSwiftDemangler", package: "swift-demangler")
+                .product(name: "AppleSwiftDemangling", package: "swift-demangler")
             ],
             path: "Source/KSCrash/Recording/Tools",
             publicHeadersPath: ".",
