@@ -255,7 +255,8 @@ let project = Project(
             deploymentTargets: .iOS("13.0"),
             sources: ["Sources/KSCrashTestTools/**"],
             dependencies: [
-                .target(name: "KSCrashRecordingCore")
+                .target(name: "KSCrashRecordingCore"),
+                .xctest
             ],
             settings: .settings(base: [
                 "SKIP_INSTALL": "NO",
