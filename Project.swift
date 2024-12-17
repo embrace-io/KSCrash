@@ -255,12 +255,14 @@ let project = Project(
             deploymentTargets: .iOS("13.0"),
             sources: ["Sources/KSCrashTestTools/**"],
             dependencies: [
-                .target(name: "KSCrashRecordingCore")
+                .target(name: "KSCrashRecordingCore"),
+                .xctest
             ],
             settings: .settings(base: [
                 "SKIP_INSTALL": "NO",
                 "BUILD_LIBRARY_FOR_DISTRIBUTION": "YES",
-                "HEADER_SEARCH_PATHS": ["$(SRCROOT)/Sources/KSCrashCore/include"]
+                "CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER": "NO",
+                "HEADER_SEARCH_PATHS": ["$(SRCROOT)/Sources/KSCrashTestTools/include", "$(SRCROOT)/Sources/KSCrashCore/include"]
             ])
         )
     ]
